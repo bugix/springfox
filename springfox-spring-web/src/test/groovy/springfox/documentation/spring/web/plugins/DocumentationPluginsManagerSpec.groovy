@@ -79,60 +79,6 @@ class DocumentationPluginsManagerSpec extends Specification {
       sut.resourceGroupingStrategy(DocumentationType.SWAGGER_12) == mockStrategy
   }
 
-  def "Even when no operation plugins are applied an empty operation is returned" () {
-    given:
-      def operationContext = Mock(OperationContext)
-    and:
-      operationContext.operationBuilder() >> new OperationBuilder(new CachingOperationNameGenerator())
-    when:
-      def sut = customWebPlugins()
-      def operation = sut.operation(operationContext)
-    then:
-      operation != null
-  }
-
-  def "Operation plugins are applied" () {
-    given:
-      def operationPlugin = Mock(OperationBuilderPlugin)
-      def operationContext = Mock(OperationContext)
-    and:
-      operationContext.operationBuilder() >> new OperationBuilder(new CachingOperationNameGenerator())
-      operationPlugin.supports(_) >> true
-    when:
-      def sut = customWebPlugins([], [], [operationPlugin])
-      def operation = sut.operation(operationContext)
-    then:
-      operation != null
-      operationPlugin.apply(operationContext)
-  }
-
-  def "Even when no parameter plugins are applied an empty operation is returned" () {
-    given:
-      def paramContext = Mock(ParameterContext)
-    and:
-      paramContext.parameterBuilder() >> new ParameterBuilder()
-    when:
-      def sut = customWebPlugins()
-      def parameter = sut.parameter(paramContext)
-    then:
-      parameter != null
-  }
-
-  def "Parameter plugins are applied" () {
-    given:
-      def paramPlugin = Mock(ParameterBuilderPlugin)
-      def paramContext = Mock(ParameterContext)
-    and:
-      paramContext.parameterBuilder() >> new ParameterBuilder()
-      paramPlugin.supports(_) >> true
-    when:
-      def sut = customWebPlugins([], [], [], [paramPlugin])
-      def parameter = sut.parameter(paramContext)
-    then:
-      parameter != null
-      paramPlugin.apply(paramContext)
-  }
-
   def "Path decorator plugins are applied" () {
     given:
       def pathContext = Mock(PathContext)

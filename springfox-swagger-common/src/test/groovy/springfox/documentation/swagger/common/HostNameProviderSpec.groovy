@@ -9,17 +9,6 @@ import static springfox.documentation.swagger.common.HostNameProvider.*
 import static springfox.documentation.swagger.common.XForwardPrefixPathAdjuster.*
 
 class HostNameProviderSpec extends Specification {
-  def "should prefix path with x-forwarded-prefix"() {
-    given:
-    def request = mockRequest()
-
-    when:
-    def result = componentsFrom(request, "/basePath")
-
-    then:
-    result.toUriString() == "http://localhost/prefix"
-  }
-
   def "should not be allowed to create object from utility class"() {
     when:
     new HostNameProvider()
